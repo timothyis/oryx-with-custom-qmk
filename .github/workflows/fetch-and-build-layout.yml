@@ -107,7 +107,13 @@ jobs:
           # Copy layout files to the qmk folder
           rm -rf ${keyboard_directory}/${{ github.event.inputs.layout_geometry }}/keymaps/${{ github.event.inputs.layout_id }}
           mkdir -p ${keyboard_directory}/${{ github.event.inputs.layout_geometry }}/keymaps && cp -r ${{ github.event.inputs.layout_id }} "$_"
-          
+
+          # Fetch getreuer's community QMK modules (not vendored, since qmk_firmware is reset from ZSA's upstream every run)
+          rm -rf /tmp/getreuer-qmk-modules
+          git clone --depth 1 https://github.com/getreuer/qmk-modules.git /tmp/getreuer-qmk-modules
+          mkdir -p qmk_firmware/modules/getreuer
+          cp -r /tmp/getreuer-qmk-modules/socd_cleaner qmk_firmware/modules/getreuer/
+
           # Build the layout
           docker run -v ./qmk_firmware:/root --rm qmk /bin/sh -c "
             qmk setup zsa/qmk_firmware -b firmware${{ steps.download-layout-source.outputs.firmware_version }} -y
