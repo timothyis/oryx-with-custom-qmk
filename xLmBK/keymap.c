@@ -67,8 +67,9 @@ socd_cleaner_t socd_opposing_pairs[] = {
   {{KC_Q, KC_E}, SOCD_CLEANER_LAST},
 };
 
-void layer_state_set_user(layer_state_t state) {
+layer_state_t layer_state_set_user(layer_state_t state) {
   socd_cleaner_enabled = layer_state_cmp(state, 1);
+  return state;
 }
 
 const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
